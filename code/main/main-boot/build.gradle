@@ -1,0 +1,41 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.2'
+    id 'com.palantir.docker' version '0.31.0'
+    id "com.gorylenko.gradle-git-properties" version "2.3.2"
+    id 'java'
+}
+
+jar {
+    enabled = false
+}
+
+springBoot {
+    buildInfo()
+}
+
+docker {
+    dockerfile file("$projectDir/src/main/docker/Dockerfile")
+    name "yonicon/template-service:latest"
+    // tag 'jFrog', "TODO_DOCKER_REGISTRY_/yonicon/template-service:${project.version}"
+    files "$buildDir/libs"
+}
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
+dependencies {
+    implementation project(':main-app')
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'net.logstash.logback:logstash-logback-encoder'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
+
+description = 'main-boot'
+
+project.tasks["dockerPrepare"].dependsOn "bootJar"

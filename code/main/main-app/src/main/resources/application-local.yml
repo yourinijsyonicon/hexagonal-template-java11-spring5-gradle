@@ -1,0 +1,10 @@
+be.yonicon.template:
+  infra:
+    security:
+      enabled: false
+    customer:
+      backend: inmem
+
+spring:
+  zipkin:
+    enabled: false

@@ -1,0 +1,36 @@
+plugins {
+    id 'com.palantir.docker' version '0.31.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+docker {
+    dockerfile file("$projectDir/src/main/docker/Dockerfile")
+    name "yonicon/template-service-sanity-tests:latest"
+//    tag 'jFrog', "TODO_DOCKER_REGISTRY_/yonicon/template-service-sanity-tests:${project.version}"
+    files "$buildDir/libs"
+}
+
+shadowJar {
+    manifest {
+        attributes 'Main-Class': 'be.yonicon.template.sanity.SanityTestApplication'
+    }
+}
+
+jar {
+    enabled = false
+}
+
+dependencies {
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.springframework:spring-web'
+    implementation 'org.junit.jupiter:junit-jupiter-engine'
+    implementation 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'org.xmlunit:xmlunit-core'
+    implementation 'org.xmlunit:xmlunit-assertj'
+    implementation 'net.bytebuddy:byte-buddy'
+}
+
+description = 'sanity-tests'
+
+project.tasks["dockerPrepare"].dependsOn "shadowJar"
