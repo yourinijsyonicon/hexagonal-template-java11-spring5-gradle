@@ -7,6 +7,8 @@ It is free to use.
 ## Build
 run `gradle build`
 
+or use gradle wrapper `./gradlew build` (or use the gradlew.bat file for Windows OS)
+
 ## Run locally
 Run TemplateApplication with local profile
 
