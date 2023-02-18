@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM eclipse-temurin:17-jdk
 
 VOLUME /tmp
 COPY main-boot-*.jar app.jar

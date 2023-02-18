@@ -38,6 +38,12 @@ tasks.register('copyJarToDockerDir', Copy) {
     into "$buildDir/docker"
 }
 
+tasks.register('copyDockerfileToDockerDir', Copy) {
+    from "$projectDir/src/main/docker"
+    include "**/*"
+    into "$buildDir/docker"
+}
+
 tasks.register('buildDockerImage', Exec) {
     workingDir "$buildDir"
     commandLine "podman", "build", "-t", "yonicon/${dockerBuildName}:${project.version}", "docker"
@@ -48,6 +54,6 @@ tasks.register('pushDockerImage', Exec) {
 }
 
 copyJarToDockerDir.dependsOn build
-//buildDockerImage.dependsOn prepareDockerDir
 buildDockerImage.dependsOn copyJarToDockerDir
+buildDockerImage.dependsOn copyDockerfileToDockerDir
 pushDockerImage.dependsOn buildDockerImage

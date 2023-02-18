@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM eclipse-temurin:17-jdk
 
 VOLUME /tmp
 COPY sanity-tests-*-all.jar app.jar
