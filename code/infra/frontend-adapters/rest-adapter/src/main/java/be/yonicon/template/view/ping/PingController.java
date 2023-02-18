@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PingController {
-    @GetMapping(value = "/ping", produces = "application/json")
+    @GetMapping(value = "/ping", produces = "text/plain")
     public String ping() {
         return "i am alive";
     }

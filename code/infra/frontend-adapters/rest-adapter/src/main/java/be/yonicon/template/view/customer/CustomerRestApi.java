@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -29,7 +30,7 @@ public interface CustomerRestApi {
             @ApiResponse(code = 404, message = "Customer not found")
     })
     @GetMapping("/customer/{customerId}")
-    CustomerContentResponse getCustomer(final String customerId);
+    CustomerContentResponse getCustomer(@PathVariable final String customerId);
 
     @ApiOperation(value = "Creates a new customer")
     @ApiResponses(value = {
@@ -46,7 +47,7 @@ public interface CustomerRestApi {
             @ApiResponse(code = 409, message = "Conflicting input")
     })
     @PutMapping("/customer/{customerId}")
-    void updateCustomer(final String customerId, @Valid final CustomerContentRequest customerContent);
+    void updateCustomer(@PathVariable final String customerId, @Valid final CustomerContentRequest customerContent);
 
     @ApiOperation(value = "Deletes an existing customer")
     @ApiResponses(value = {
@@ -54,5 +55,5 @@ public interface CustomerRestApi {
             @ApiResponse(code = 404, message = "Customer not found")
     })
     @DeleteMapping("/customer/{customerId}")
-    void deleteCustomer(final String customerId);
+    void deleteCustomer(@PathVariable final String customerId);
 }

@@ -1,4 +1,4 @@
-name: Hexagonal Template Yonicon
+name: Hexagonal Template Yonicon - Java 11 - Spring 5 - Gradle
 
 on:
   push:

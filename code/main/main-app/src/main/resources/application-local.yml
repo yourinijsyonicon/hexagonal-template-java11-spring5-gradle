@@ -4,7 +4,3 @@ be.yonicon.template:
       enabled: false
     customer:
       backend: inmem
-
-spring:
-  zipkin:
-    enabled: false

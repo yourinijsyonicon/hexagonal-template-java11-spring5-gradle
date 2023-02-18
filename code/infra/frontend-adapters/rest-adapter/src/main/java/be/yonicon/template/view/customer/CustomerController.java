@@ -14,6 +14,7 @@ import be.yonicon.template.vocabulary.CustomerId;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,7 +57,7 @@ public class CustomerController implements CustomerRestApi {
     }
 
     @GetMapping(value = "/customer/{customerId}", produces = "application/json")
-    public CustomerContentResponse getCustomer(final String customerId) {
+    public CustomerContentResponse getCustomer(@PathVariable final String customerId) {
         return ofNullable(customerId)
                 .map(CustomerId::from)
                 .map(getCustomer::getCustomer)
@@ -73,14 +74,14 @@ public class CustomerController implements CustomerRestApi {
     }
 
     @PutMapping(value = "/customer/{customerId}", consumes = "application/json")
-    public void updateCustomer(final String customerId, @Valid @RequestBody final CustomerContentRequest customerContent) {
+    public void updateCustomer(@PathVariable final String customerId, @Valid @RequestBody final CustomerContentRequest customerContent) {
         ofNullable(customerContent)
                 .map(CustomerContentRequestMapper::map)
                 .ifPresent(it -> updateCustomer.update(toCustomerId(customerId), it, new RestUpdateCustomerPresenter()));
     }
 
     @DeleteMapping("/customer/{customerId}")
-    public void deleteCustomer(final String customerId) {
+    public void deleteCustomer(@PathVariable final String customerId) {
         deleteCustomer.delete(
                 toCustomerId(customerId),
                 new RestDeleteCustomerPresenter());

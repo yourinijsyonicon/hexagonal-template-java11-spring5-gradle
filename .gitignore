@@ -25,6 +25,7 @@ dist/
 
 # JetBrains IDE
 .idea/
+*.iml
 
 # Unit test reports
 TEST*.xml
@@ -45,20 +46,12 @@ Thumbs.db
 *.mov
 *.wmv
 
-
-*.iml
-/persoon-root-parent.ipr
-/persoon-root-parent.iws
-
 # Never push secrets to repository
 *-secrets.yml
 !template-secrets.yml
 
 # shade plugin generates this...
 dependency-reduced-pom.xml
-
-# Created by https://www.toptal.com/developers/gitignore/api/gradle
-# Edit at https://www.toptal.com/developers/gitignore?templates=gradle
 
 ### Gradle ###
 .gradle

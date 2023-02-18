@@ -2,11 +2,12 @@ package be.yonicon.template.config;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.web.SecurityFilterChain;
 
 // squid:S1118 : constructor needed for Spring Configuration
 // squid:S4604 : EnableAutoConfiguration needed for enabling spring security
@@ -17,33 +18,35 @@ public class SecurityConfig {
     @Configuration
     @EnableAutoConfiguration
     @ConditionalOnProperty(prefix = "be.yonicon.template.infra.security", name = "enabled", havingValue = "false")
-    protected static class DefaultWebSecurityConfig extends WebSecurityConfigurerAdapter {
+    protected static class DefaultWebSecurityConfig {
 
-        @Override
-        public void configure(WebSecurity web) {
-            web.ignoring().antMatchers("/**");
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+            http.authorizeRequests().anyRequest().permitAll();
+            return http.build();
         }
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().anyRequest().permitAll();
+        @Bean
+        public WebSecurityCustomizer webSecurityCustomizer() {
+            return web -> web.ignoring().antMatchers("/**");
         }
     }
 
     @EnableWebSecurity
     @EnableAutoConfiguration
     @ConditionalOnProperty(prefix = "be.yonicon.template.infra.security", name = "enabled")
-    protected static class SsoConfig extends WebSecurityConfigurerAdapter {
+    protected static class SsoConfig {
 
-        @Override
-        public void configure(WebSecurity web) {
-            web.ignoring().antMatchers("/actuator/**");
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             // TODO implement security if required.
             http.csrf().disable().authorizeRequests().anyRequest().authenticated();
+            return http.build();
+        }
+
+        @Bean
+        public WebSecurityCustomizer webSecurityCustomizer() {
+            return web -> web.ignoring().antMatchers("/actuator/**");
         }
     }
 }

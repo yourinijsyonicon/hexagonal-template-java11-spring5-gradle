@@ -27,14 +27,6 @@ management:
 spring:
   #security:
   # fill in security details ...
-  zipkin:
-    sender:
-      type: web
-    service:
-      name: yonicon.template
-  sleuth:
-    sampler:
-      probability: 1.0
   main:
     banner-mode: off
     allow-bean-definition-overriding: true
