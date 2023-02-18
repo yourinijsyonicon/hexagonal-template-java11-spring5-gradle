@@ -19,7 +19,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
 
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+    compileOnly 'javax.servlet:javax.servlet-api:4.0.1' // todo migrate to jakarta dependency
 }
 
 description = 'main-app'

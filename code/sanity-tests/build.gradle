@@ -1,13 +1,5 @@
 plugins {
-    id 'com.palantir.docker' version '0.31.0'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
-}
-
-docker {
-    dockerfile file("$projectDir/src/main/docker/Dockerfile")
-    name "yonicon/template-service-sanity-tests:latest"
-//    tag 'jFrog', "TODO_DOCKER_REGISTRY_/yonicon/template-service-sanity-tests:${project.version}"
-    files "$buildDir/libs"
+    id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
 shadowJar {
@@ -33,4 +25,23 @@ dependencies {
 
 description = 'sanity-tests'
 
-project.tasks["dockerPrepare"].dependsOn "shadowJar"
+def dockerBuildName = 'hexagonal-template-java11-spring5-sanity'
+tasks.register('copyJarToDockerDir', Copy) {
+    from "$buildDir/libs"
+    include "**/*.jar"
+    into "$buildDir/docker"
+}
+
+tasks.register('buildDockerImage', Exec) {
+    workingDir "$buildDir"
+    commandLine "podman", "build", "-t", "yonicon/${dockerBuildName}:${project.version}", "docker"
+}
+
+tasks.register('pushDockerImage', Exec) {
+    commandLine "podman", "push", "yonicon/${dockerBuildName}:${project.version}"
+}
+
+copyJarToDockerDir.dependsOn shadowJar
+//buildDockerImage.dependsOn prepareDockerDir
+buildDockerImage.dependsOn copyJarToDockerDir
+pushDockerImage.dependsOn buildDockerImage

@@ -1,7 +1,6 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.2'
-    id 'com.palantir.docker' version '0.31.0'
-    id "com.gorylenko.gradle-git-properties" version "2.3.2"
+    id "org.springframework.boot" version "2.7.8"
+    id "com.gorylenko.gradle-git-properties" version "2.4.1"
     id 'java'
 }
 
@@ -13,12 +12,6 @@ springBoot {
     buildInfo()
 }
 
-docker {
-    dockerfile file("$projectDir/src/main/docker/Dockerfile")
-    name "yonicon/template-service:latest"
-    // tag 'jFrog', "TODO_DOCKER_REGISTRY_/yonicon/template-service:${project.version}"
-    files "$buildDir/libs"
-}
 
 configurations {
     developmentOnly
@@ -38,4 +31,23 @@ dependencies {
 
 description = 'main-boot'
 
-project.tasks["dockerPrepare"].dependsOn "bootJar"
+def dockerBuildName = 'hexagonal-template-java11-spring5'
+tasks.register('copyJarToDockerDir', Copy) {
+    from "$buildDir/libs"
+    include "**/*.jar"
+    into "$buildDir/docker"
+}
+
+tasks.register('buildDockerImage', Exec) {
+    workingDir "$buildDir"
+    commandLine "podman", "build", "-t", "yonicon/${dockerBuildName}:${project.version}", "docker"
+}
+
+tasks.register('pushDockerImage', Exec) {
+    commandLine "podman", "push", "yonicon/${dockerBuildName}:${project.version}"
+}
+
+copyJarToDockerDir.dependsOn build
+//buildDockerImage.dependsOn prepareDockerDir
+buildDockerImage.dependsOn copyJarToDockerDir
+pushDockerImage.dependsOn buildDockerImage
