@@ -1,4 +1,6 @@
-springdoc.swagger-ui.path: "/swagger-ui.html"
+springdoc:
+  packages-to-scan: "be.yonicon.template"
+  swagger-ui.path: "/swagger-ui/index.html"
 
 be.yonicon.template:
   infra:

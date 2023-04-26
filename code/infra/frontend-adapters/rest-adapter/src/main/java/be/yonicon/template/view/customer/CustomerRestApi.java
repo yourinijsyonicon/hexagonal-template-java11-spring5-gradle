@@ -2,10 +2,10 @@ package be.yonicon.template.view.customer;
 
 import be.yonicon.template.view.customer.content.request.CustomerContentRequest;
 import be.yonicon.template.view.customer.content.response.CustomerContentResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,44 +15,44 @@ import org.springframework.web.bind.annotation.PutMapping;
 import javax.validation.Valid;
 import java.util.List;
 
-@Api(value = "CustomerRestApi", produces = "application/json", consumes = "application/json")
+@Tag(name = "CustomerRestApi", description = "Customer Rest API")
 public interface CustomerRestApi {
-    @ApiOperation(value = "Gets a list of all customers", response = List.class)
+    @Operation(description = "Gets a list of all customers")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Customers listed")
+            @ApiResponse(responseCode = "200", description = "Customers listed")
     })
     @GetMapping("/customer")
     List<CustomerContentResponse> getCustomers();
 
-    @ApiOperation(value = "Gets the customer by id", response = CustomerContentResponse.class)
+    @Operation(description = "Gets the customer by id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Customer found"),
-            @ApiResponse(code = 404, message = "Customer not found")
+            @ApiResponse(responseCode = "200", description = "Customer found"),
+            @ApiResponse(responseCode = "404", description = "Customer not found")
     })
     @GetMapping("/customer/{customerId}")
     CustomerContentResponse getCustomer(@PathVariable final String customerId);
 
-    @ApiOperation(value = "Creates a new customer")
+    @Operation(description = "Creates a new customer")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Customer created"),
-            @ApiResponse(code = 409, message = "Conflicting input")
+            @ApiResponse(responseCode = "201", description = "Customer created"),
+            @ApiResponse(responseCode = "409", description = "Conflicting input")
     })
     @PostMapping("/customer")
     void createCustomer(@Valid final CustomerContentRequest customerContent);
 
-    @ApiOperation(value = "Updates an existing customer")
+    @Operation(description = "Updates an existing customer")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Customer updated"),
-            @ApiResponse(code = 404, message = "Customer not found"),
-            @ApiResponse(code = 409, message = "Conflicting input")
+            @ApiResponse(responseCode = "200", description = "Customer updated"),
+            @ApiResponse(responseCode = "404", description = "Customer not found"),
+            @ApiResponse(responseCode = "409", description = "Conflicting input")
     })
     @PutMapping("/customer/{customerId}")
     void updateCustomer(@PathVariable final String customerId, @Valid final CustomerContentRequest customerContent);
 
-    @ApiOperation(value = "Deletes an existing customer")
+    @Operation(description = "Deletes an existing customer")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Customer deleted"),
-            @ApiResponse(code = 404, message = "Customer not found")
+            @ApiResponse(responseCode = "200", description = "Customer deleted"),
+            @ApiResponse(responseCode = "404", description = "Customer not found")
     })
     @DeleteMapping("/customer/{customerId}")
     void deleteCustomer(@PathVariable final String customerId);

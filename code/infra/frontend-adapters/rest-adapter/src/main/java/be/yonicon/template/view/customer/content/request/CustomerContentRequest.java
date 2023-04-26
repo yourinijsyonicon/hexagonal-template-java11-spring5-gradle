@@ -1,6 +1,6 @@
 package be.yonicon.template.view.customer.content.request;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
@@ -9,19 +9,19 @@ import javax.validation.constraints.NotBlank;
 @Valid
 public class CustomerContentRequest {
     @NotBlank(message = "Please provide The Commercial Name")
-    @ApiModelProperty(notes = "The Commercial Name of our Customer", name = "commercial name", required = true)
+    @Schema(description = "The Commercial Name of our Customer", requiredMode = Schema.RequiredMode.REQUIRED)
     private String commercialName;
 
     @NotBlank(message = "Please provide the Legal Name")
-    @ApiModelProperty(notes = "The Legal Name of our Customer", name = "legal name")
+    @Schema(description = "The Legal Name of our Customer")
     private String legalName;
 
     @NotBlank(message = "Please provide the Contact Person")
-    @ApiModelProperty(notes = "The Contact Person of our customer", name = "contact person")
+    @Schema(description = "The Contact Person of our customer")
     private String contactPerson;
 
     @Length(min = 10, max = 10, message = "The Vat number needs to be 10 characters long")
-    @ApiModelProperty(notes = "The VAT number of our customer, format is without symbols (f.e. 0123456789)", name = "vat number", required = true)
+    @Schema(description = "The VAT number of our customer, format is without symbols (f.e. 0123456789)", requiredMode = Schema.RequiredMode.REQUIRED)
     private String vatNr;
 
     public CustomerContentRequest() {
