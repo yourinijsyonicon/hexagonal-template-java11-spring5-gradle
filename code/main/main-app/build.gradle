@@ -1,4 +1,4 @@
-processResources {
+tasks.processResources {
     expand(project.properties)
 }
 

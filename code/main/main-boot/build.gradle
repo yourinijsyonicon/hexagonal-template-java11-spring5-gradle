@@ -4,20 +4,12 @@ plugins {
     id 'java'
 }
 
-jar {
+tasks.jar {
     enabled = false
 }
 
 springBoot {
     buildInfo()
-}
-
-
-configurations {
-    developmentOnly
-    runtimeClasspath {
-        extendsFrom developmentOnly
-    }
 }
 
 dependencies {
@@ -30,30 +22,3 @@ dependencies {
 }
 
 description = 'main-boot'
-
-def dockerBuildName = 'hexagonal-template-java11-spring5'
-tasks.register('copyJarToDockerDir', Copy) {
-    from "$buildDir/libs"
-    include "**/*.jar"
-    into "$buildDir/docker"
-}
-
-tasks.register('copyDockerfileToDockerDir', Copy) {
-    from "$projectDir/src/main/docker"
-    include "**/*"
-    into "$buildDir/docker"
-}
-
-tasks.register('buildDockerImage', Exec) {
-    workingDir "$buildDir"
-    commandLine "podman", "build", "-t", "yonicon/${dockerBuildName}:${project.version}", "docker"
-}
-
-tasks.register('pushDockerImage', Exec) {
-    commandLine "podman", "push", "yonicon/${dockerBuildName}:${project.version}"
-}
-
-copyJarToDockerDir.dependsOn build
-buildDockerImage.dependsOn copyJarToDockerDir
-buildDockerImage.dependsOn copyDockerfileToDockerDir
-pushDockerImage.dependsOn buildDockerImage

@@ -1,6 +1,5 @@
 # Hexagonal Template
-
-**Java 11 and Spring 5 are deprecated. Please use a newer Spring Hexagonal Template setup**
+**Java 11 and Spring 5 are deprecated. Please use a newer Spring Hexagonal Template setup. This repository will not be updated in the future.**
 
 This is a very limited base setup for a hexagonal structured application architecture with Spring 5 (Spring Boot 2), java 11 and gradle.
 
